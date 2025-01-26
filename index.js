@@ -24,7 +24,7 @@ server.use(bodyParser.json());
 
 // Enable CORS and JSON parsing
 server.use(cors({
-    origin: process.env.CLIENT_URL || "https://techsagelabs.in/",
+    origin: process.env.CLIENT_URL || "https://temp-techsage-bf6csqh08-techsages-projects.vercel.app/",
     credentials: true, // Include credentials like cookies
 }));
 
