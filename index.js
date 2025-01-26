@@ -57,7 +57,6 @@
 // const port = process.env.PORT || 3000; // Default to port 3000 if 8000 is unavailable
 // // Start the server
 
-
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -77,21 +76,18 @@ const server = express();
 // Middleware
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
-server.use(cookieParser()); // Enable cookie parsing
-server.use(
-  cors({
-    origin: process.env.CLIENT_URL || "https://techsagelabs.in", // Allow requests from the client
-    credentials: true, // Include credentials like cookies
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow specific HTTP methods
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "x-access-token",
-      "x-refresh-token",
-    ], // Allow specific headers
-  })
-);
-server.use(express.json());
+server.use(cookieParser());
+server.use(cors());
+server.options("*", cors()); // Handle preflight requests globally
+
+// Manually set headers if needed
+server.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL || "https://techsagelabs.in");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, x-access-token, x-refresh-token");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
 
 // Database connection
 const database = dbconnect();
@@ -115,12 +111,7 @@ server.use("/api/RUserlogout", logoutrouter);
 server.use("/api/RAdduseraddress", addAddressrouter);
 
 // Start the server
-const port = process.env.PORT || 3000; // Default to port 3000 if not specified
+const port = process.env.PORT || 3000;
 server.listen(port, () => {
   console.log(`Server running successfully at http://localhost:${port}`);
 });
-
-// server.listen(port, () => {
-//     console.log(`server connected successufly at http://localhost:${port}`);
-//   });
-  
