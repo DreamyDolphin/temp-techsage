@@ -23,10 +23,11 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 
 // Enable CORS and JSON parsing
-server.use(cors({
-    origin: process.env.CLIENT_URL || "https://temp-techsage-bf6csqh08-techsages-projects.vercel.app/",
-    credentials: true, // Include credentials like cookies
-}));
+// server.use(cors({
+//     origin: process.env.CLIENT_URL || "https://techsagelabs.in",
+//     credentials: true, // Include credentials like cookies
+// }));
+server.use(cors());
 
 server.use(express.json());
 
